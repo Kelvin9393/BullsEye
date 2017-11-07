@@ -23,6 +23,21 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         currentValue = lroundf(slider.value)
         startNewRound()
+        
+        let thumbImageNormal = #imageLiteral(resourceName: "SliderThumb-Normal")
+        slider.setThumbImage(thumbImageNormal, for: .normal)
+        
+        let thumbImageHighlighted = #imageLiteral(resourceName: "SliderThumb-Highlighted")
+        slider.setThumbImage(thumbImageHighlighted, for: .highlighted)
+        
+        let insets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 14)
+        let trackLeftImage = #imageLiteral(resourceName: "SliderTrackLeft")
+        let trackLeftResizable = trackLeftImage.resizableImage(withCapInsets: insets)
+        slider.setMinimumTrackImage(trackLeftResizable, for: .normal)
+        
+        let trackRightImage = #imageLiteral(resourceName: "SliderTrackRight")
+        let trackRightResizable = trackRightImage.resizableImage(withCapInsets: insets)
+        slider.setMaximumTrackImage(trackRightResizable, for: .normal)
     }
     
     func updateLabels() {
@@ -38,7 +53,7 @@ class ViewController: UIViewController {
         slider.value = Float(currentValue)
         updateLabels()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -70,11 +85,17 @@ class ViewController: UIViewController {
         score += points
         let message = "You score \(points) points"
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Awesome", style: .default, handler: nil)
+        let action = UIAlertAction(title: "Awesome", style: .default) { (_) in
+            self.startNewRound()
+        }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        startNewRound()
     }
     
+    @IBAction func startOver(_ sender: UIButton) {
+        score = 0
+        round = 0
+        startNewRound()
+    }
 }
 
